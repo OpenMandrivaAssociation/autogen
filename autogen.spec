@@ -1,7 +1,11 @@
-%define lib_name %mklibname %{name} 0
+%define major 0
+%define libnamedevelold %mklibname %{name} 0 -d
+%define libname %mklibname %{name} %{major}
+%define libnamedevel %mklibname %{name} -d
+%define libnamestaticdevel %mklibname %{name} -d -s
 
 Name:           autogen
-Version:        5.9.1
+Version:        5.9.2
 Release:        %mkrel 1
 Source0:        http://ovh.dl.sourceforge.net/autogen/autogen-%{version}.tar.bz2
 Url:            http://autogen.sourceforge.net/
@@ -13,7 +17,7 @@ Requires(preun): info-install
 BuildRequires:  chrpath
 BuildRequires:  libguile-devel
 BuildRequires:  libxml2-devel
-BuildRoot:      %{_tmppath}/%{name}-%{version}-root
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root
 
 %description
 AutoGen is a tool designed to simplify the creation and maintenance 
@@ -21,24 +25,36 @@ of programs that contain large amounts of repetitious text. It is
 especially valuable in programs that have several blocks of text 
 that must be kept synchronized.
 
-%package -n %{lib_name}
+%package -n %{libname}
 Summary:        Main library for %{name}
 Group:          Development/Other
 
-%description -n %{lib_name}
+%description -n %{libname}
 AutoGen is a tool designed to simplify the creation and maintenance 
 of programs that contain large amounts of repetitious text. It is 
 especially valuable in programs that have several blocks of text 
 that must be kept synchronized.
 
-%package -n %{lib_name}-devel
+%package -n %{libnamedevel}
 Summary:        Development headers and libraries for %{name}
 Group:          Development/Other
-Provides:       lib%{name}-devel = %{version}-%{release}
-Provides:       %{_lib}autogen-devel = %{version}-%{release}
-Requires:       %{lib_name} = %{version}-%{release}
+Provides:       %{name}-devel = %{version}-%{release}
+Obsoletes:      %{libnamedevelold} < %{version}-%{release}
+Requires:       %{libname} = %{version}-%{release}
 
-%description -n %{lib_name}-devel
+%description -n %{libnamedevel}
+AutoGen is a tool designed to simplify the creation and maintenance 
+of programs that contain large amounts of repetitious text. It is 
+especially valuable in programs that have several blocks of text 
+that must be kept synchronized.
+
+%package -n %{libnamestaticdevel}
+Summary:        Static libraries for %{name}
+Group:          Development/Other
+Provides:       %{name}-static-devel = %{version}-%{release}
+Requires:       %{libnamedevel} = %{version}-%{release}
+
+%description -n %{libnamestaticdevel}
 AutoGen is a tool designed to simplify the creation and maintenance 
 of programs that contain large amounts of repetitious text. It is 
 especially valuable in programs that have several blocks of text 
@@ -63,9 +79,9 @@ that must be kept synchronized.
 %preun
 %_remove_install_info %{name}.info
 
-%post -n %{lib_name} -p /sbin/ldconfig
+%post -n %{libname} -p /sbin/ldconfig
 
-%postun -n %{lib_name} -p /sbin/ldconfig
+%postun -n %{libname} -p /sbin/ldconfig
 
 %clean
 %{__rm} -rf %{buildroot}
@@ -82,16 +98,19 @@ that must be kept synchronized.
 %{_datadir}/aclocal/*
 %{_datadir}/autogen
 
-%files -n %{lib_name}
+%files -n %{libname}
 %defattr(-,root,root)
 %{_libdir}/*.so.*
 
-%files -n %{lib_name}-devel
+%files -n %{libnamedevel}
 %defattr(0755,root,root,0755)
 %{_bindir}/autoopts-config
 %defattr(0644,root,root,0755)
 %{_includedir}/autoopts
 %{_libdir}/*.la
-%{_libdir}/*.a
 %{_libdir}/*.so
 %{_libdir}/pkgconfig/*
+
+%files -n %{libnamestaticdevel}
+%defattr(0644,root,root,0755)
+%{_libdir}/*.a
