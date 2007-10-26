@@ -5,7 +5,7 @@
 %define libnamestaticdevel %mklibname %{name} -d -s
 
 Name:           autogen
-Version:        5.9.2
+Version:        5.9.3
 Release:        %mkrel 1
 Source0:        http://ovh.dl.sourceforge.net/autogen/autogen-%{version}.tar.bz2
 Url:            http://autogen.sourceforge.net/
