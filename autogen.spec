@@ -99,7 +99,7 @@ that must be kept synchronized.
 
 %files -n %{libname}
 %defattr(-,root,root)
-%{_libdir}/*.so.%{major}*
+%{_libdir}/*.so.*
 
 %files -n %{libnamedevel}
 %defattr(0755,root,root,0755)
