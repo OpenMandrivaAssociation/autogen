@@ -5,13 +5,13 @@
 %define libnamestaticdevel %mklibname %{name} -d -s
 
 Name:           autogen
-Version:        5.9.3
+Version:        5.9.4
 Release:        %mkrel 1
 Source0:        http://ovh.dl.sourceforge.net/autogen/autogen-%{version}.tar.bz2
 Url:            http://autogen.sourceforge.net/
 Summary:        Simplifies the creation and maintenance of programs
 Group:          Development/Other
-License:        GPL
+License:        GPLv2+
 Requires(post): info-install
 Requires(preun): info-install
 BuildRequires:  chrpath
@@ -99,7 +99,7 @@ that must be kept synchronized.
 
 %files -n %{libname}
 %defattr(-,root,root)
-%{_libdir}/*.so.*
+%{_libdir}/*.so.%{major}*
 
 %files -n %{libnamedevel}
 %defattr(0755,root,root,0755)
