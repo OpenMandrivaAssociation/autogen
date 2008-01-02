@@ -17,6 +17,7 @@ Requires(preun): info-install
 BuildRequires:  chrpath
 BuildRequires:  libguile-devel
 BuildRequires:  libxml2-devel
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root
 
 %description
 AutoGen is a tool designed to simplify the creation and maintenance 
