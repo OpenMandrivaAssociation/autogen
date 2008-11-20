@@ -1,4 +1,4 @@
-%define major 0
+%define major 25
 %define libnamedevelold %mklibname %{name} 0 -d
 %define libname %mklibname %{name} %{major}
 %define libnamedevel %mklibname %{name} -d
@@ -6,14 +6,15 @@
 
 Summary:	Simplifies the creation and maintenance of programs
 Name:		autogen
-Version:	5.9.5
-Release:	%mkrel 2
+Version:	5.9.6
+Release:	%mkrel 1
 Group:		Development/Other
 License:	GPLv2+
-URL:		http://autogen.sourceforge.net/
-Source0:	http://ovh.dl.sourceforge.net/autogen/autogen-%{version}.tar.gz
+URL:		http://www.gnu.org/software/autogen/
+Source0:	http://ftp.gnu.org/gnu/autogen/rel%{version}/%{name}-%{version}.tar.bz2
+Source1:	%{SOURCE0}.sig
 Patch0:		autogen-libguile_linkage_fix.diff
-Requires(post): info-install
+Requires(post):	info-install
 Requires(preun): info-install
 BuildRequires:	chrpath
 BuildRequires:	libguile-devel
@@ -26,9 +27,11 @@ of programs that contain large amounts of repetitious text. It is
 especially valuable in programs that have several blocks of text 
 that must be kept synchronized.
 
-%package -n	%{libname}
+%package -n %{libname}
 Summary:	Main library for %{name}
 Group:		Development/Other
+Obsoletes:	%{mklibname %{name} 0} < 5.9.6
+Provides:	%{mklibname %{name} 0}
 
 %description -n	%{libname}
 AutoGen is a tool designed to simplify the creation and maintenance 
@@ -36,10 +39,11 @@ of programs that contain large amounts of repetitious text. It is
 especially valuable in programs that have several blocks of text 
 that must be kept synchronized.
 
-%package -n	%{libnamedevel}
+%package -n %{libnamedevel}
 Summary:	Development headers and libraries for %{name}
 Group:		Development/Other
 Provides:	%{name}-devel = %{version}-%{release}
+Provides:	lib%{name}-devel = %{version}-%{release}
 Obsoletes:	%{libnamedevelold} < %{version}-%{release}
 Requires:	%{libname} = %{version}-%{release}
 
@@ -49,10 +53,11 @@ of programs that contain large amounts of repetitious text. It is
 especially valuable in programs that have several blocks of text 
 that must be kept synchronized.
 
-%package -n	%{libnamestaticdevel}
+%package -n %{libnamestaticdevel}
 Summary:	Static libraries for %{name}
 Group:		Development/Other
 Provides:	%{name}-static-devel = %{version}-%{release}
+Provides:	lib%{name}-static-devel = %{version}-%{release}
 Requires:	%{libnamedevel} = %{version}-%{release}
 
 %description -n	%{libnamestaticdevel}
@@ -62,19 +67,20 @@ especially valuable in programs that have several blocks of text
 that must be kept synchronized.
 
 %prep
-
 %setup -q
 %patch0 -p1
 
 %build
+# (tpg) breaks compiling
+sed -i -e 's/-Werror//g' configure*
+
 %configure2_5x
-#parallel build randomly fails
-make
+%make
 
 %install
 rm -rf %{buildroot}
 
-%makeinstall
+%makeinstall_std
 
 %{_bindir}/chrpath -d %{buildroot}/%{_libdir}/lib*.so.* %{buildroot}/%{_bindir}/{autogen,columns,getdefs,xml2ag}
 
@@ -109,7 +115,7 @@ rm -rf %{buildroot}
 
 %files -n %{libname}
 %defattr(-,root,root)
-%{_libdir}/*.so.*
+%{_libdir}/*.so.%{major}*
 
 %files -n %{libnamedevel}
 %defattr(0755,root,root,0755)
