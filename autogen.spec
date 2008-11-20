@@ -1,4 +1,4 @@
-%define major 25
+%define major 0
 %define libnamedevelold %mklibname %{name} 0 -d
 %define libname %mklibname %{name} %{major}
 %define libnamedevel %mklibname %{name} -d
@@ -7,7 +7,7 @@
 Summary:	Simplifies the creation and maintenance of programs
 Name:		autogen
 Version:	5.9.6
-Release:	%mkrel 1
+Release:	%mkrel 2
 Group:		Development/Other
 License:	GPLv2+
 URL:		http://www.gnu.org/software/autogen/
@@ -30,8 +30,6 @@ that must be kept synchronized.
 %package -n %{libname}
 Summary:	Main library for %{name}
 Group:		Development/Other
-Obsoletes:	%{mklibname %{name} 0} < 5.9.6
-Provides:	%{mklibname %{name} 0}
 
 %description -n	%{libname}
 AutoGen is a tool designed to simplify the creation and maintenance 
@@ -115,7 +113,7 @@ rm -rf %{buildroot}
 
 %files -n %{libname}
 %defattr(-,root,root)
-%{_libdir}/*.so.%{major}*
+%{_libdir}/*.so.*
 
 %files -n %{libnamedevel}
 %defattr(0755,root,root,0755)
