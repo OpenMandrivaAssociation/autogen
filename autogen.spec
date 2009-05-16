@@ -6,12 +6,12 @@
 
 Summary:	Simplifies the creation and maintenance of programs
 Name:		autogen
-Version:	5.9.7
-Release:	%mkrel 2
+Version:	5.9.8
+Release:	%mkrel 1
 Group:		Development/Other
 License:	GPLv2+
 URL:		http://www.gnu.org/software/autogen/
-Source0:	http://ftp.gnu.org/gnu/autogen/rel%{version}/%{name}-%{version}.tar.bz2
+Source0:	ftp://ftp.gnu.org/gnu/%{name}/rel%{version}/%{name}-%{version}.tar.bz2
 Source1:	%{SOURCE0}.sig
 Patch0:		autogen-libguile_linkage_fix.diff
 Requires(post):	info-install
