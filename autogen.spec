@@ -7,7 +7,7 @@
 Summary:	Simplifies the creation and maintenance of programs
 Name:		autogen
 Version:	5.10
-Release:	%mkrel 2
+Release:	%mkrel 3
 Group:		Development/Other
 License:	GPLv2+
 URL:		http://www.gnu.org/software/autogen/
