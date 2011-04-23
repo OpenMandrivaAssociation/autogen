@@ -1,19 +1,17 @@
-%define major 0
-%define libnamedevelold %mklibname %{name} 0 -d
-%define libname %mklibname %{name} %{major}
-%define libnamedevel %mklibname %{name} -d
-%define libnamestaticdevel %mklibname %{name} -d -s
+%define major 25
+%define libname %mklibname opts %{major}
+%define libnamedevel %mklibname opts -d
+%define libnamestaticdevel %mklibname opts -d -s
 
 Summary:	Simplifies the creation and maintenance of programs
 Name:		autogen
-Version:	5.10
-Release:	%mkrel 3
+Version:	5.11.8
+Release:	%mkrel 1
 Group:		Development/Other
 License:	GPLv2+
 URL:		http://www.gnu.org/software/autogen/
-Source0:	http://sourceforge.net/projects/autogen/files/AutoGen/AutoGen-%{version}/%{name}-%{version}.tar.bz2
+Source0:	http://ftp.gnu.org/gnu/autogen/%{version}/%{name}-%{version}.tar.bz2
 Patch0:		autogen-libguile_linkage_fix.diff
-Requires(post):	info-install
 Requires(preun):	info-install
 BuildRequires:	chrpath
 BuildRequires:	libguile-devel
@@ -29,6 +27,7 @@ that must be kept synchronized.
 %package -n %{libname}
 Summary:	Main library for %{name}
 Group:		Development/Other
+Obsoletes:	%{_lib}autogen0 < 5.11.8
 
 %description -n	%{libname}
 AutoGen is a tool designed to simplify the creation and maintenance 
@@ -40,8 +39,8 @@ that must be kept synchronized.
 Summary:	Development headers and libraries for %{name}
 Group:		Development/Other
 Provides:	%{name}-devel = %{version}-%{release}
-Provides:	lib%{name}-devel = %{version}-%{release}
-Obsoletes:	%{libnamedevelold} < %{version}-%{release}
+Obsoletes:	%{_lib}autogen0-devel < 5.11.8
+Obsoletes:	%{_lib}autogen-devel < 5.11.8
 Requires:	%{libname} = %{version}-%{release}
 
 %description -n	%{libnamedevel}
@@ -54,8 +53,8 @@ that must be kept synchronized.
 Summary:	Static libraries for %{name}
 Group:		Development/Other
 Provides:	%{name}-static-devel = %{version}-%{release}
-Provides:	lib%{name}-static-devel = %{version}-%{release}
 Requires:	%{libnamedevel} = %{version}-%{release}
+Obsoletes:	%{_lib}autogen-static-devel < 5.11.8
 
 %description -n	%{libnamestaticdevel}
 AutoGen is a tool designed to simplify the creation and maintenance 
@@ -65,12 +64,8 @@ that must be kept synchronized.
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
-# (tpg) breaks compiling
-sed -i -e 's/-Werror//g' configure*
-
 %configure2_5x
 %make
 
@@ -79,10 +74,12 @@ rm -rf %{buildroot}
 
 %makeinstall_std
 
+mkdir -p %buildroot%_libdir
+mv %buildroot%_datadir/pkgconfig %buildroot%_libdir
+
 %{_bindir}/chrpath -d %{buildroot}/%{_libdir}/lib*.so.* %{buildroot}/%{_bindir}/{autogen,columns,getdefs,xml2ag}
 
-%post
-%_install_info %{name}.info
+%multiarch_binaries %buildroot%{_bindir}/autoopts-config
 
 %preun
 %_remove_install_info %{name}.info
@@ -112,11 +109,13 @@ rm -rf %{buildroot}
 
 %files -n %{libname}
 %defattr(-,root,root)
-%{_libdir}/*.so.*
+%{_libdir}/libopts.so.%{major}
+%{_libdir}/libopts.so.%{major}.*
 
 %files -n %{libnamedevel}
 %defattr(0755,root,root,0755)
 %{_bindir}/autoopts-config
+%multiarch %multiarch_bindir/autoopts-config
 %defattr(0644,root,root,0755)
 %{_includedir}/autoopts
 %{_libdir}/*.la
