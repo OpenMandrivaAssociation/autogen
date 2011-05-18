@@ -5,12 +5,12 @@
 
 Summary:	Simplifies the creation and maintenance of programs
 Name:		autogen
-Version:	5.11.8
+Version:	5.11.9
 Release:	%mkrel 1
 Group:		Development/Other
 License:	GPLv2+
 URL:		http://www.gnu.org/software/autogen/
-Source0:	http://ftp.gnu.org/gnu/autogen/%{version}/%{name}-%{version}.tar.bz2
+Source0:	http://ftp.gnu.org/gnu/autogen/rel%{version}/%{name}-%{version}.tar.bz2
 Patch0:		autogen-libguile_linkage_fix.diff
 Requires(preun):	info-install
 BuildRequires:	chrpath
@@ -115,7 +115,7 @@ rm -rf %{buildroot}
 %files -n %{libnamedevel}
 %defattr(0755,root,root,0755)
 %{_bindir}/autoopts-config
-%multiarch %multiarch_bindir/autoopts-config
+%multiarch_bindir/autoopts-config
 %defattr(0644,root,root,0755)
 %{_includedir}/autoopts
 %{_libdir}/*.la
