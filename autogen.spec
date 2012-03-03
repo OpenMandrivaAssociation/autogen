@@ -5,17 +5,16 @@
 
 Summary:	Simplifies the creation and maintenance of programs
 Name:		autogen
-Version:	5.12
-Release:	%mkrel 1
+Version:	5.15
+Release:	1
 Group:		Development/Other
 License:	GPLv2+
 URL:		http://www.gnu.org/software/autogen/
-Source0:	http://ftp.gnu.org/gnu/autogen/rel%{version}/%{name}-%{version}.tar.bz2
+Source0:	http://ftp.gnu.org/gnu/autogen/rel%{version}/%{name}-%{version}.tar.gz
 Requires(preun):	info-install
 BuildRequires:	chrpath
 BuildRequires:	libguile-devel
 BuildRequires:	libxml2-devel
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
 AutoGen is a tool designed to simplify the creation and maintenance 
@@ -69,9 +68,9 @@ that must be kept synchronized.
 %make
 
 %install
-rm -rf %{buildroot}
 
 %makeinstall_std
+find %{buildroot} -name *.la -delete
 
 mkdir -p %{buildroot}%{_libdir}
 mv %{buildroot}%{_datadir}/pkgconfig %{buildroot}%{_libdir}
@@ -83,19 +82,7 @@ mv %{buildroot}%{_datadir}/pkgconfig %{buildroot}%{_libdir}
 %preun
 %_remove_install_info %{name}.info
 
-%if %mdkversion < 200900
-%post -n %{libname} -p /sbin/ldconfig
-%endif
-
-%if %mdkversion < 200900
-%postun -n %{libname} -p /sbin/ldconfig
-%endif
-
-%clean
-rm -rf %{buildroot}
-
 %files
-%defattr(-,root,root)
 %doc README TODO
 %{_bindir}/autogen
 %{_bindir}/columns
@@ -107,7 +94,6 @@ rm -rf %{buildroot}
 %{_datadir}/autogen
 
 %files -n %{libname}
-%defattr(-,root,root)
 %{_libdir}/libopts.so.%{major}
 %{_libdir}/libopts.so.%{major}.*
 
@@ -118,7 +104,6 @@ rm -rf %{buildroot}
 
 %defattr(0644,root,root,0755)
 %{_includedir}/autoopts
-%{_libdir}/*.la
 %{_libdir}/*.so
 %{_libdir}/pkgconfig/*
 
