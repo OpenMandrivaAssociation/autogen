@@ -13,7 +13,7 @@ URL:		http://www.gnu.org/software/autogen/
 Source0:	http://ftp.gnu.org/gnu/autogen/rel%{version}/%{name}-%{version}.tar.gz
 Requires(preun):	info-install
 BuildRequires:	chrpath
-BuildRequires:	libguile-devel
+BuildRequires:	guile-devel
 BuildRequires:	libxml2-devel
 
 %description
