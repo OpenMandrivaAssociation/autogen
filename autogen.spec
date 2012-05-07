@@ -6,8 +6,8 @@
 
 Summary:	Simplifies the creation and maintenance of programs
 Name:		autogen
-Version:	5.15
-Release:	2
+Version:	5.16
+Release:	1
 Group:		Development/Other
 License:	GPLv2+
 URL:		http://www.gnu.org/software/autogen/
@@ -17,6 +17,7 @@ Requires(preun):	info-install
 BuildRequires:	chrpath
 BuildRequires:	pkgconfig(guile-2.0)
 BuildRequires:	libxml2-devel
+Patch0:		autogen-5.12-pkgconfig.patch
 
 %description
 AutoGen is a tool designed to simplify the creation and maintenance 
@@ -64,9 +65,13 @@ that must be kept synchronized.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
-%configure2_5x
+
+export LDFLAGS="-lguile"
+%configure
+
 %make
 
 %install
@@ -101,7 +106,6 @@ that must be kept synchronized.
 %{_bindir}/autoopts-config
 %defattr(0644,root,root,0755)
 %{_includedir}/autoopts/
-%{_libdir}/*.la
 %{_libdir}/*.so
 %{_datadir}/pkgconfig/*
 
