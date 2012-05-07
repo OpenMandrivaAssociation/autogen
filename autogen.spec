@@ -69,8 +69,7 @@ that must be kept synchronized.
 
 %build
 
-export LDFLAGS="-lguile"
-%configure
+%configure2_5x
 
 %make
 
