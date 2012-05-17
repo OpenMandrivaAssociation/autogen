@@ -11,6 +11,7 @@ License:	GPLv2+
 URL:		http://www.gnu.org/software/autogen/
 Source0:	http://sourceforge.net/projects/autogen/files/AutoGen/AutoGen-%{version}/%{name}-%{version}.tar.gz
 Patch0:		autogen-5.12-pkgconfig.patch
+Patch1:		autogen-5.16_guile-2.0.patch
 
 BuildRequires:	chrpath
 BuildRequires:	pkgconfig(guile-2.0)
@@ -56,7 +57,8 @@ This package contains the development files for %{name}.
 %install
 %makeinstall_std
 
-%{_bindir}/chrpath -d %{buildroot}/%{_libdir}/lib*.so.* %{buildroot}/%{_bindir}/{autogen,columns,getdefs,xml2ag}
+%{_bindir}/chrpath -d %{buildroot}/%{_libdir}/lib*.so.* \
+	%{buildroot}/%{_bindir}/{autogen,columns,getdefs,xml2ag}
 
 %post
 %_install_info %{name}.info
