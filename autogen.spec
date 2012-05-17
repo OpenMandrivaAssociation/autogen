@@ -1,8 +1,6 @@
 %define major 25
-%define libnamedevelold %mklibname %{name} 0 -d
 %define libname %mklibname opts %{major}
-%define libnamedevel %mklibname %{name} -d
-%define libnamestaticdevel %mklibname %{name} -d -s
+%define develname %mklibname opts -d
 
 Summary:	Simplifies the creation and maintenance of programs
 Name:		autogen
@@ -12,12 +10,13 @@ Group:		Development/Other
 License:	GPLv2+
 URL:		http://www.gnu.org/software/autogen/
 Source0:	http://sourceforge.net/projects/autogen/files/AutoGen/AutoGen-%{version}/%{name}-%{version}.tar.gz
-Requires(post):	info-install
-Requires(preun):	info-install
+Patch0:		autogen-5.12-pkgconfig.patch
+
 BuildRequires:	chrpath
 BuildRequires:	pkgconfig(guile-2.0)
-BuildRequires:	libxml2-devel
-Patch0:		autogen-5.12-pkgconfig.patch
+BuildRequires:	pkgconfig(libxml-2.0)
+
+Requires(post,preun):	info-install
 
 %description
 AutoGen is a tool designed to simplify the creation and maintenance 
@@ -31,45 +30,26 @@ Group:		Development/Other
 Obsoletes:	%{_lib}autogen0 < 5.11
 
 %description -n	%{libname}
-AutoGen is a tool designed to simplify the creation and maintenance 
-of programs that contain large amounts of repetitious text. It is 
-especially valuable in programs that have several blocks of text 
-that must be kept synchronized.
+This package contains the shared library for %{name}.
 
-%package -n %{libnamedevel}
+%package -n %{develname}
 Summary:	Development headers and libraries for %{name}
 Group:		Development/Other
 Provides:	%{name}-devel = %{version}-%{release}
-Provides:	lib%{name}-devel = %{version}-%{release}
-Obsoletes:	%{libnamedevelold} < %{version}-%{release}
 Requires:	%{libname} = %{version}-%{release}
+Obsoletes:	%{_lib}autogen0-devel < %{version}-%{release}
+Obsoletes:	%{_lib}opts-static-devel < %{version}-%{release}
 
-%description -n	%{libnamedevel}
-AutoGen is a tool designed to simplify the creation and maintenance 
-of programs that contain large amounts of repetitious text. It is 
-especially valuable in programs that have several blocks of text 
-that must be kept synchronized.
-
-%package -n %{libnamestaticdevel}
-Summary:	Static libraries for %{name}
-Group:		Development/Other
-Provides:	%{name}-static-devel = %{version}-%{release}
-Provides:	lib%{name}-static-devel = %{version}-%{release}
-Requires:	%{libnamedevel} = %{version}-%{release}
-
-%description -n	%{libnamestaticdevel}
-AutoGen is a tool designed to simplify the creation and maintenance 
-of programs that contain large amounts of repetitious text. It is 
-especially valuable in programs that have several blocks of text 
-that must be kept synchronized.
+%description -n	%{develname}
+This package contains the development files for %{name}.
 
 %prep
 %setup -q
-%patch0 -p1
+%apply_patches
 
 %build
-
-%configure2_5x
+%configure2_5x \
+	--disable-static
 
 %make
 
@@ -84,7 +64,6 @@ that must be kept synchronized.
 %preun
 %_remove_install_info %{name}.info
 
-
 %files
 %doc README TODO
 %{_bindir}/autogen
@@ -92,22 +71,16 @@ that must be kept synchronized.
 %{_bindir}/getdefs
 %{_bindir}/xml2ag
 %{_infodir}/autogen.info*
-%{_mandir}/*/*
 %{_datadir}/aclocal/*
 %{_datadir}/autogen/
+%{_mandir}/*/*
 
 %files -n %{libname}
-%{_libdir}/*.so.%{major}
-%{_libdir}/*.so.%{major}.*
+%{_libdir}/*.so.%{major}*
 
-%files -n %{libnamedevel}
-%defattr(0755,root,root,0755)
+%files -n %{develname}
 %{_bindir}/autoopts-config
-%defattr(0644,root,root,0755)
 %{_includedir}/autoopts/
 %{_libdir}/*.so
 %{_datadir}/pkgconfig/*
 
-%files -n %{libnamestaticdevel}
-%defattr(0644,root,root,0755)
-%{_libdir}/*.a
