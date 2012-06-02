@@ -5,7 +5,7 @@
 Summary:	Simplifies the creation and maintenance of programs
 Name:		autogen
 Version:	5.16
-Release:	1
+Release:	2
 Group:		Development/Other
 License:	GPLv2+
 URL:		http://www.gnu.org/software/autogen/
@@ -15,8 +15,6 @@ Patch0:		autogen-5.12-pkgconfig.patch
 BuildRequires:	chrpath
 BuildRequires:	pkgconfig(guile-2.0)
 BuildRequires:	pkgconfig(libxml-2.0)
-
-Requires(post,preun):	info-install
 
 %description
 AutoGen is a tool designed to simplify the creation and maintenance 
@@ -58,12 +56,6 @@ This package contains the development files for %{name}.
 
 %{_bindir}/chrpath -d %{buildroot}/%{_libdir}/lib*.so.* \
 	%{buildroot}/%{_bindir}/{autogen,columns,getdefs,xml2ag}
-
-%post
-%_install_info %{name}.info
-
-%preun
-%_remove_install_info %{name}.info
 
 %files
 %doc README TODO
