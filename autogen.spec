@@ -5,7 +5,7 @@
 Summary:	Simplifies the creation and maintenance of programs
 Name:		autogen
 Version:	5.16
-Release:	2
+Release:	3
 Group:		Development/Other
 License:	GPLv2+
 URL:		http://www.gnu.org/software/autogen/
@@ -15,6 +15,8 @@ Patch0:		autogen-5.12-pkgconfig.patch
 BuildRequires:	chrpath
 BuildRequires:	pkgconfig(guile-2.0)
 BuildRequires:	pkgconfig(libxml-2.0)
+
+%define __noautoreq '/bin/cat'
 
 %description
 AutoGen is a tool designed to simplify the creation and maintenance 
