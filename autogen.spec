@@ -56,6 +56,8 @@ This package contains the development files for %{name}.
 
 %{_bindir}/chrpath -d %{buildroot}/%{_libdir}/lib*.so.* \
 	%{buildroot}/%{_bindir}/{autogen,columns,getdefs,xml2ag}
+# wipe duplicate
+rm -rf %{buildroot}/%{_libdir}/%{name}
 
 %files
 %doc README TODO
@@ -75,4 +77,4 @@ This package contains the development files for %{name}.
 %{_bindir}/autoopts-config
 %{_includedir}/autoopts/
 %{_libdir}/*.so
-%{_datadir}/pkgconfig/*
+%{_libdir}/pkgconfig/*
