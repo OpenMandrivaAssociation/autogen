@@ -4,8 +4,8 @@
 
 Summary:	Simplifies the creation and maintenance of programs
 Name:		autogen
-Version:	5.18.5
-Release:	3
+Version:	5.18.6
+Release:	1
 Group:		Development/Other
 License:	GPLv2+
 URL:		http://www.gnu.org/software/autogen/
