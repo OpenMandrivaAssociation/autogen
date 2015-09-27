@@ -1,6 +1,7 @@
 %define major	25
 %define libname %mklibname opts %{major}
 %define devname %mklibname opts -d
+%define _disable_rebuild_configure 1
 
 Summary:	Simplifies the creation and maintenance of programs
 Name:		autogen
