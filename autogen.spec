@@ -5,7 +5,7 @@
 
 Summary:	Simplifies the creation and maintenance of programs
 Name:		autogen
-Version:	5.18.6
+Version:	5.18.7
 Release:	1
 Group:		Development/Other
 License:	GPLv2+
