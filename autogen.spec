@@ -5,7 +5,7 @@
 
 Summary:	Simplifies the creation and maintenance of programs
 Name:		autogen
-Version:	5.18.9
+Version:	5.18.12
 Release:	1
 Group:		Development/Other
 License:	GPLv2+
@@ -56,6 +56,7 @@ This package contains the development files for %{name}.
 
 %{_bindir}/chrpath -d %{buildroot}/%{_libdir}/lib*.so.* \
 	%{buildroot}/%{_bindir}/{autogen,columns,getdefs,xml2ag}
+
 # wipe duplicate
 rm -rf %{buildroot}/%{_libdir}/%{name}
 
