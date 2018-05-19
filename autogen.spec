@@ -17,6 +17,7 @@ Patch1:		autogen-5.18.12-guile-2.2.patch
 BuildRequires:	chrpath
 BuildRequires:	pkgconfig(guile-2.2)
 BuildRequires:	pkgconfig(libxml-2.0)
+BuildRequires:	gmp-devel
 BuildRequires:	autoconf automake libtool autoconf-archive gettext-devel
 
 %define __noautoreq '/bin/cat'
