@@ -46,10 +46,14 @@ This package contains the development files for %{name}.
 %prep
 %setup -q
 %apply_patches
+find . -name Makefile.in |xargs touch
 
 %build
 %configure \
 	--disable-static
+# Don't rebuild configure -- it won't work because of deps
+# on prehistoric tools
+touch aclocal.m4 configure Makefile
 
 %make
 
