@@ -45,9 +45,6 @@ This package contains the development files for %{name}.
 %prep
 %setup -q
 %apply_patches
-aclocal -I config
-automake -a
-autoconf
 
 %build
 %configure \
