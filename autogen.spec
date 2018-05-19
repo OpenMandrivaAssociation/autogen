@@ -16,7 +16,7 @@ Patch1:		autogen-5.18.12-guile-2.2.patch
 
 BuildRequires:	chrpath
 BuildRequires:	pkgconfig(guile-2.2)
-BuildRequires:	pkgconfig(libxml-2.0)
+BuildRequires:	pkgconfig(libxml-2.0) pkgconfig(zlib) pkgconfig(liblzma) pkgconfig(icu-i18n) pkgconfig(icu-uc) pkgconfig(icu-io)
 BuildRequires:	gmp-devel
 BuildRequires:	autoconf automake libtool autoconf-archive gettext-devel
 
