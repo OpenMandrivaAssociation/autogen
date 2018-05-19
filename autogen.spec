@@ -17,7 +17,7 @@ Patch1:		autogen-5.18.12-guile-2.2.patch
 BuildRequires:	chrpath
 BuildRequires:	pkgconfig(guile-2.2)
 BuildRequires:	pkgconfig(libxml-2.0)
-BuildRequires:	autoconf automake libtool autoconf-archive
+BuildRequires:	autoconf automake libtool autoconf-archive gettext-devel
 
 %define __noautoreq '/bin/cat'
 
@@ -46,15 +46,17 @@ This package contains the development files for %{name}.
 %prep
 %setup -q
 %apply_patches
-find . -name Makefile.in |xargs touch
+
+libtoolize --force
+fix-old-automake-files --fix-ac-defun
+aclocal -I config
+autoheader
+automake -a
+autoconf
 
 %build
 %configure \
 	--disable-static
-# Don't rebuild configure -- it won't work because of deps
-# on prehistoric tools
-touch aclocal.m4 configure Makefile
-
 %make
 
 %install
