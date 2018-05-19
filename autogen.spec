@@ -10,11 +10,12 @@ Release:	1
 Group:		Development/Other
 License:	GPLv2+
 URL:		http://www.gnu.org/software/autogen/
-Source0:	http://sourceforge.net/projects/autogen/files/AutoGen/AutoGen-%{version}/%{name}-%{version}.tar.xz
+Source0:	https://ftp.gnu.org/gnu/autogen/rel%{version}/autogen-%{version}.tar.xz
 Patch0:		autogen-5.12-pkgconfig.patch
+Patch1:		autogen-5.18.12-guile-2.2.patch
 
 BuildRequires:	chrpath
-BuildRequires:	pkgconfig(guile-2.0)
+BuildRequires:	pkgconfig(guile-2.2)
 BuildRequires:	pkgconfig(libxml-2.0)
 
 %define __noautoreq '/bin/cat'
@@ -44,6 +45,9 @@ This package contains the development files for %{name}.
 %prep
 %setup -q
 %apply_patches
+aclocal -I config
+automake -a
+autoconf
 
 %build
 %configure \
