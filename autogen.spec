@@ -54,8 +54,7 @@ Requires:	%{libname} = %{version}-%{release}
 This package contains the development files for %{name}.
 
 %prep
-%setup -q
-%apply_patches
+%autosetup -p1
 
 libtoolize --force
 fix-old-automake-files --fix-ac-defun
@@ -65,12 +64,13 @@ automake -a
 autoconf
 
 %build
+%global optflags %{optflags} -Qunused-arguments
 %configure \
 	--disable-static
-%make
+%make_build
 
 %install
-%makeinstall_std
+%make_install
 
 %{_bindir}/chrpath -d %{buildroot}/%{_libdir}/lib*.so.* \
 	%{buildroot}/%{_bindir}/{autogen,columns,getdefs,xml2ag}
