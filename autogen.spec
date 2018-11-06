@@ -64,7 +64,7 @@ automake -a
 autoconf
 
 %build
-%global optflags %{optflags} -Qunused-arguments
+%global optflags %{optflags} -Qunused-arguments -Wno-unknown-warning-option
 %configure \
 	--disable-static
 %make_build
