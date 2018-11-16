@@ -13,7 +13,7 @@ URL:		http://www.gnu.org/software/autogen/
 Source0:	https://ftp.gnu.org/gnu/autogen/rel%{version}/autogen-%{version}.tar.xz
 Patch0:		autogen-5.12-pkgconfig.patch
 Patch1:		autogen-5.18.12-guile-2.2.patch
-
+BuildRequires:	gcc
 BuildRequires:	chrpath
 BuildRequires:	pkgconfig(guile-2.2)
 BuildRequires:	pkgconfig(libxml-2.0)
@@ -64,9 +64,11 @@ automake -a
 autoconf
 
 %build
-%global optflags %{optflags} -Qunused-arguments -Wno-unknown-warning-option
+export CC=gcc
+
 %configure \
 	--disable-static
+
 %make_build
 
 %install
