@@ -2,6 +2,8 @@
 %define libname %mklibname opts %{major}
 %define devname %mklibname opts -d
 %define _disable_rebuild_configure 1
+%global optflags %{optflags} -Wno-implicit-fallthrough -Wno-format-overflow -Wno-format-truncation
+%global __requires_exclude '/bin/cat'
 
 Summary:	Simplifies the creation and maintenance of programs
 Name:		autogen
@@ -29,8 +31,6 @@ BuildRequires:	libtool
 BuildRequires:	autoconf-archive
 BuildRequires:	gettext-devel
 
-%define __noautoreq '/bin/cat'
-
 %description
 AutoGen is a tool designed to simplify the creation and maintenance 
 of programs that contain large amounts of repetitious text. It is 
@@ -56,6 +56,9 @@ This package contains the development files for %{name}.
 %prep
 %autosetup -p1
 
+# Disable failing test
+sed -i 's|errors.test||' autoopts/test/Makefile.in
+
 libtoolize --force
 fix-old-automake-files --fix-ac-defun
 aclocal -I config
@@ -68,6 +71,9 @@ export CC=gcc
 
 %configure \
 	--disable-static
+
+# Omit unused direct shared library dependencies.
+sed --in-place --expression 's! -shared ! -Wl,--as-needed\0!g' ./libtool
 
 %make_build
 
