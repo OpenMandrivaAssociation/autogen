@@ -24,6 +24,7 @@ BuildRequires:	pkgconfig(liblzma)
 BuildRequires:	pkgconfig(icu-i18n)
 BuildRequires:	pkgconfig(icu-uc)
 BuildRequires:	pkgconfig(icu-io)
+BuildRequires:	pkgconfig(atomic_ops)
 BuildRequires:	gmp-devel
 BuildRequires:	autoconf
 BuildRequires:	automake
