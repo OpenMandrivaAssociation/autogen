@@ -7,14 +7,13 @@
 
 Summary:	Simplifies the creation and maintenance of programs
 Name:		autogen
-Version:	5.18.14
-Release:	2
+Version:	5.18.16
+Release:	1
 Group:		Development/Other
 License:	GPLv2+
 URL:		http://www.gnu.org/software/autogen/
 Source0:	https://ftp.gnu.org/gnu/autogen/rel%{version}/autogen-%{version}.tar.xz
 Patch0:		autogen-5.12-pkgconfig.patch
-Patch1:		autogen-5.18.12-guile-2.2.patch
 BuildRequires:	gcc
 BuildRequires:	chrpath
 BuildRequires:	pkgconfig(guile-2.2)
