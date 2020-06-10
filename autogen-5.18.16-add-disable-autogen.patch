@@ -1,0 +1,70 @@
+diff -up autogen-5.18.16/config/ag_macros.m4.3~ autogen-5.18.16/config/ag_macros.m4
+--- autogen-5.18.16/config/ag_macros.m4.3~	2018-07-26 01:29:14.000000000 +0200
++++ autogen-5.18.16/config/ag_macros.m4	2020-06-11 01:01:06.072972740 +0200
+@@ -48,6 +48,7 @@ dnl do always after generated macros:
+ dnl
+ AC_DEFUN([INVOKE_AG_MACROS_LAST],[
+ [if test X${INVOKE_AG_MACROS_LAST_done} != Xyes ; then]
++  if test "X${ag_cv_enable_autogen}" != Xno; then
+   GUILE_FLAGS
+   [test -x "${PKG_CONFIG}" || {
+     test -z "${PKG_CONFIG}" && PKG_CONFIG=pkg-config
+@@ -75,6 +76,7 @@ AC_DEFUN([INVOKE_AG_MACROS_LAST],[
+   test ${ag_gv} -ge 200000 || AC_MSG_FAILURE([cannot use pre-2.0 Guile])
+   AC_DEFINE_UNQUOTED(GUILE_VERSION, ${ag_gv},
+              [define to a single number for Guile version])
++  fi
+   INVOKE_LIBOPTS_MACROS
+ 
+   [test "X${ac_cv_header_sys_wait_h}" = Xyes || \
+@@ -140,6 +142,17 @@ dnl
+ dnl  This macro will invoke the AutoConf macros specified in misc.def
+ dnl  that have not been disabled with "omit-invocation".
+ dnl
++AC_DEFUN([AG_DISABLE_AUTOGEN],[
++  AC_ARG_ENABLE([autogen],
++    AS_HELP_STRING([--disable-autogen], [build only libopts]),
++    [ag_cv_enable_autogen=${enable_autogen}],
++    AC_CACHE_CHECK([whether autogen is desired], ag_cv_enable_autogen,
++      ag_cv_enable_autogen=yes)
++  ) # end of AC_ARG_ENABLE
++  AM_CONDITIONAL([BUILD_AUTOGEN],[test "X${ag_cv_enable_autogen}" != Xno])
++
++]) # end of AC_DEFUN of AG_DISABLE_AUTOGEN
++
+ AC_DEFUN([AG_DISABLE_SHELL],[
+   AC_ARG_ENABLE([shell],
+     AS_HELP_STRING([--disable-shell], [shell scripts are desired]),
+@@ -559,6 +572,9 @@ AC_DEFUN([AG_WITH_GROUP_PACKAGER],[
+ 
+ AC_DEFUN([INVOKE_AG_MACROS],[
+   AC_REQUIRE([INVOKE_AG_MACROS_FIRST])
++  # Check if we want to build anything but libopts
++  AG_DISABLE_AUTOGEN
++
+   # Check to see if shell scripts are desired.
+   AG_DISABLE_SHELL
+ 
+diff -up autogen-5.18.16/Makefile.am.3~ autogen-5.18.16/Makefile.am
+--- autogen-5.18.16/Makefile.am.3~	2020-06-11 01:01:06.036972272 +0200
++++ autogen-5.18.16/Makefile.am	2020-06-11 01:02:08.883789981 +0200
+@@ -19,7 +19,10 @@
+ 
+ ACLOCAL_AMFLAGS = -I config
+ 
+-SUBDIRS        = compat snprintfv autoopts agen5
++SUBDIRS        = snprintfv autoopts
++
++if BUILD_AUTOGEN
++SUBDIRS       += compat agen5
+ 
+ if DO_SHELL_CMDS
+ if  HAVE_XML_LIB
+@@ -36,6 +39,7 @@ if  HAVE_XML_LIB
+ SUBDIRS       += xml2ag
+ endif
+ endif
++endif
+ 
+ pkgdata_DATA   = config/liboptschk.m4
+ misc_extra     = \
