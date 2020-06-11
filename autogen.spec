@@ -26,6 +26,7 @@ BuildRequires:	pkgconfig(icu-i18n)
 BuildRequires:	pkgconfig(icu-uc)
 BuildRequires:	pkgconfig(icu-io)
 BuildRequires:	pkgconfig(atomic_ops)
+BuildRequires:	pkgconfig(bdw-gc)
 BuildRequires:	gmp-devel
 BuildRequires:	autoconf
 BuildRequires:	automake
