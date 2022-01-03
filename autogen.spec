@@ -2,13 +2,13 @@
 %define libname %mklibname opts %{major}
 %define devname %mklibname opts -d
 %define _disable_rebuild_configure 1
-%global optflags %{optflags} -Wno-implicit-fallthrough -Wno-format-overflow -Wno-format-truncation
+%global optflags %{optflags} -Wno-implicit-fallthrough -Wno-format-overflow -Wno-format-truncation -Wno-missing-field-initializers -Wno-unknown-warning-option
 %global __requires_exclude '/bin/cat'
 
 Summary:	Simplifies the creation and maintenance of programs
 Name:		autogen
 Version:	5.18.16
-Release:	2
+Release:	3
 Group:		Development/Other
 License:	GPLv2+
 URL:		http://www.gnu.org/software/autogen/
@@ -16,7 +16,10 @@ Source0:	https://ftp.gnu.org/gnu/autogen/rel%{version}/autogen-%{version}.tar.xz
 Patch0:		autogen-5.12-pkgconfig.patch
 Patch1:		autogen-5.18.16-guile-3.0.patch
 Patch2:		autogen-5.18.16-add-disable-autogen.patch
-BuildRequires:	gcc
+# openSUSE patches
+Patch10:	autogen-catch-race-error.patch
+Patch11:	sprintf-overflow.patch
+Patch12:	gcc9-fix-wrestrict.patch
 BuildRequires:	chrpath
 BuildRequires:	pkgconfig(guile-3.0)
 BuildRequires:	pkgconfig(libxml-2.0)
@@ -44,7 +47,7 @@ that must be kept synchronized.
 Summary:	Main library for %{name}
 Group:		Development/Other
 
-%description -n	%{libname}
+%description -n %{libname}
 This package contains the shared library for %{name}.
 
 %package -n %{devname}
@@ -53,7 +56,7 @@ Group:		Development/Other
 Provides:	%{name}-devel = %{version}-%{release}
 Requires:	%{libname} = %{version}-%{release}
 
-%description -n	%{devname}
+%description -n %{devname}
 This package contains the development files for %{name}.
 
 %prep
@@ -69,8 +72,9 @@ autoheader
 automake -a
 autoconf
 
+sed -i 's/ -Werror / /' configure
+
 %build
-export CC=gcc
 %configure
 
 # Omit unused direct shared library dependencies.
@@ -93,10 +97,10 @@ rm -rf %{buildroot}/%{_libdir}/%{name}
 %{_bindir}/columns
 %{_bindir}/getdefs
 %{_bindir}/xml2ag
-%{_infodir}/autogen.info*
 %{_datadir}/aclocal/*
 %{_datadir}/autogen/
-%{_mandir}/*/*
+%doc %{_infodir}/autogen.info*
+%doc %{_mandir}/*/*
 
 %files -n %{libname}
 %{_libdir}/libopts.so.%{major}*
