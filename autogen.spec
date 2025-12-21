@@ -20,6 +20,8 @@ Patch2:		autogen-5.18.16-add-disable-autogen.patch
 Patch10:	autogen-catch-race-error.patch
 Patch11:	sprintf-overflow.patch
 Patch12:	gcc9-fix-wrestrict.patch
+BuildRequires:	libtool-base
+BuildRequires:	slibtool
 BuildRequires:	chrpath
 BuildRequires:	pkgconfig(guile-3.0)
 BuildRequires:	pkgconfig(libxml-2.0)
