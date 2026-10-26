@@ -4,6 +4,8 @@
 %define _disable_rebuild_configure 1
 %global optflags %{optflags} -Wno-implicit-fallthrough -Wno-format-overflow -Wno-format-truncation -Wno-missing-field-initializers -Wno-unknown-warning-option
 %global __requires_exclude '/bin/cat'
+# LTO's libtool rewrite leaves a binary that aborts while generating stamp-agtexi.
+%global _disable_lto 1
 
 Summary:	Simplifies the creation and maintenance of programs
 Name:		autogen
