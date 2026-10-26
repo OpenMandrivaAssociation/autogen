@@ -35,6 +35,7 @@ BuildRequires:	pkgconfig(bdw-gc)
 BuildRequires:	gmp-devel
 BuildRequires:	autoconf
 BuildRequires:	automake
+BuildRequires:	make
 BuildRequires:	libtool
 BuildRequires:	autoconf-archive
 BuildRequires:	gettext-devel
